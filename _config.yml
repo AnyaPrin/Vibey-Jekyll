@@ -1,0 +1,8 @@
+title: My New Jekyll Site
+description: 新しいJekyllサイト
+baseurl: "/my-new-jekyll-site" # リポジトリ名を反映
+url: "https://anya.github.io"
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
