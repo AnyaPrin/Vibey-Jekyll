@@ -1,6 +1,6 @@
-title: My New Jekyll Site
-description: 新しいJekyllサイト
-baseurl: "/my-new-jekyll-site" # リポジトリ名を反映
+title: Vibey-Jekyll
+description: ただのネタ帳です。
+baseurl: "/Vibey-Jekyll"
 url: "https://anya.github.io"
 theme: minima
 plugins:
