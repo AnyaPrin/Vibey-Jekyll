@@ -1,5 +1,5 @@
 ---
 layout: home
-title: ホーム
+title: Vibey-Jekyll
 ---
 # ただのネタ帳です(;´･ω･)
