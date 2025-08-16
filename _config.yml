@@ -2,7 +2,8 @@ title: Vibey-Jekyll
 description: ただのネタ帳です。
 baseurl: "/Vibey-Jekyll"
 url: "https://anya.github.io"
-theme: minima
+remote_theme: pages-themes/hacker@v0.2.0
 plugins:
+  - jekyll-remote-theme
   - jekyll-feed
   - jekyll-sitemap
