@@ -1,3 +1,7 @@
+---
 layout: home
-title: ホームようこそ！これは新しいJekyllサイトです。
+title: ホーム
+---
+# ようこそ！
 
+これは新しいJekyllサイトです。
