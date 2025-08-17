@@ -1,0 +1,63 @@
+name: Create New Jekyll Post
+
+on:
+  # Trigger the workflow manually from the GitHub UI
+  workflow_dispatch:
+    inputs:
+      title:
+        description: 'Post Title'
+        required: true
+        default: 'New Post from GitHub UI'
+      content:
+        description: 'Post Content (Markdown)'
+        required: true
+        default: 'This post was created from the GitHub Actions UI.'
+  # Trigger the workflow from the JavaScript web app
+  repository_dispatch:
+    types: [create-new-post]
+
+jobs:
+  create-post:
+    runs-on: ubuntu-latest
+
+    # Set the necessary permissions for the workflow
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create and commit new post file
+        uses: actions/github-script@v6
+        with:
+          script: |
+            // Get the inputs from the workflow trigger
+            const title = context.payload.client_payload.title || github.context.payload.inputs.title;
+            const content = context.payload.client_payload.content || github.context.payload.inputs.content;
+
+            // Generate filename and Jekyll Front Matter
+            const now = new Date();
+            const dateStr = now.toISOString().split('T')[0];
+            const safeTitle = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+            const filePath = `_posts/${dateStr}-${safeTitle}.md`;
+            
+            const fileContent = 
+`---
+layout: post
+title: "${title}"
+date: ${now.toISOString()}
+categories: memo
+---
+
+${content}`;
+
+            // Commit the new file to the repository
+            await github.rest.repos.createOrUpdateFileContents({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              path: filePath,
+              message: `Add new post: "${title}"`,
+              content: btoa(fileContent),
+              branch: 'main'
+            });
