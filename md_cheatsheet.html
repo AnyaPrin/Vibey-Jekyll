@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            line-height: 1.6;
+        }
+        h1, h2, h3, h4 {
+            font-weight: bold;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        h1 { font-size: 2em; }
+        h2 { font-size: 1.5em; }
+        h3 { font-size: 1.25em; }
+        h4 { font-size: 1.1em; }
+        pre {
+            background-color: #f6f8fa;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+        }
+        code {
+            font-family: monospace;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <title>Markdown Cheatsheet</title>
+</head>
+<body class="p-8 max-w-4xl mx-auto">
+
+    <div class="bg-white p-8 rounded-xl shadow-lg">
+        <h1 class="text-3xl">Markdown チートシート</h1>
+        <p class="text-gray-600 mb-6">基本的なMarkdownの書式をまとめたものです。</p>
+    
+        <hr class="my-6">
+    
+        <h2 class="text-2xl">見出し (Headers)</h2>
+        <p><code>#</code> の数で階層を表現します。</p>
+        <pre><code class="language-md"># 見出し1
+## 見出し2
+### 見出し3
+#### 見出し4
+</code></pre>
+
+        <h2 class="text-2xl">テキストの装飾 (Text Emphasis)</h2>
+        <p><strong>太字</strong>: <code>**太字**</code> または <code>__太字__</code></p>
+        <p><em>斜体</em>: <code>*斜体*</code> または <code>_斜体_</code></p>
+        <p><strong><em>太字と斜体</em></strong>: <code>***太字と斜体***</code></p>
+        <p><del>取り消し線</del>: <code>~~取り消し線~~</code></p>
+    
+        <h2 class="text-2xl">リスト (Lists)</h2>
+        <h3 class="text-xl">順序なしリスト (Unordered List)</h3>
+        <p><code>*</code>、<code>-</code>、<code>+</code> のいずれかを使い、スペースを入れます。</p>
+        <ul>
+            <li>項目1</li>
+            <li>項目2
+                <ul>
+                    <li>項目2-1</li>
+                    <li>項目2-2</li>
+                </ul>
+            </li>
+        </ul>
+        <pre><code class="language-md">* 項目1
+* 項目2
+  * 項目2-1
+  * 項目2-2
+</code></pre>
+    
+        <h3 class="text-xl">順序付きリスト (Ordered List)</h3>
+        <p>数字と <code>.</code> を使います。</p>
+        <ol>
+            <li>項目A</li>
+            <li>項目B</li>
+            <li>項目C</li>
+        </ol>
+        <pre><code class="language-md">1. 項目A
+2. 項目B
+3. 項目C
+</code></pre>
+    
+        <h2 class="text-2xl">リンクと画像 (Links and Images)</h2>
+        <p><strong>リンク</strong>: <code>[表示テキスト](URL)</code></p>
+        <p>例：<a href="https://www.google.com" class="text-blue-600 hover:underline">Google</a></p>
+        <p><strong>画像</strong>: <code>![代替テキスト](画像URL)</code></p>
+        <p>例：<img src="https://placehold.co/150x150" alt="サンプル画像"></p>
+    
+        <h2 class="text-2xl">コード (Code)</h2>
+        <h3 class="text-xl">インラインコード</h3>
+        <p>文章中にコードを埋め込むには、<code>`</code>で囲みます。</p>
+        <p>例：<code>これは <code>console.log()</code> のサンプルです。</code></p>
+    
+        <h3 class="text-xl">コードブロック</h3>
+        <p>複数行のコードを記述するには、<code>` ` `</code>で囲みます。言語名を指定すると、シンタックスハイライトが有効になります。</p>
+        <pre><code class="language-js">function hello() {
+  console.log("Hello, World!");
+}
+</code></pre>
+    
+        <h2 class="text-2xl">表 (Tables)</h2>
+        <p><code>|</code> (パイプ) と <code>-</code> (ハイフン) を使います。</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>ヘッダー1</th>
+                    <th>ヘッダー2</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>セル1</td>
+                    <td>セル2</td>
+                </tr>
+                <tr>
+                    <td>セル3</td>
+                    <td>セル4</td>
+                </tr>
+            </tbody>
+        </table>
+        <pre><code class="language-md">| ヘッダー1 | ヘッダー2 |
+| :--- | :---: |
+| セル1 | セル2 |
+| セル3 | セル4 |
+</code></pre>
+    
+        <h2 class="text-2xl">引用 (Blockquotes)</h2>
+        <p><code>&gt;</code> を使います。</p>
+        <blockquote>
+            <p>これは引用です。</p>
+            <p>別の引用行。</p>
+        </blockquote>
+        <pre><code class="language-md">&gt; これは引用です。
+&gt; 別の引用行。
+</code></pre>
+    </div>
+</body>
+</html>
