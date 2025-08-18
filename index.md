@@ -4,6 +4,6 @@ title: Vibey-Jekyll
 ---
 # ただのネタ帳です(;´･ω･)
 
-[editor](editor.html)
+[editor](editor2.html)
 
 
