@@ -1,5 +1,5 @@
 ---
-layout: home
+layout: default
 title: Vibey-Jekyll
 ---
 # ただのネタ帳です(;´･ω･)
