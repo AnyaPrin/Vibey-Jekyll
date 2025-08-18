@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none; /* Initially hidden */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+    </style>
+    <title>GitHub Post Creator</title>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+
+    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-2xl">
+        <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">新しい投稿を作成</h1>
+    
+        <form id="postForm" class="space-y-4">
+            <div>
+                <label for="postTitle" class="block text-sm font-medium text-gray-700">タイトル</label>
+                <input type="text" id="postTitle" name="postTitle" value="私の新しい投稿" required
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            </div>
+    
+            <div>
+                <label for="postContent" class="block text-sm font-medium text-gray-700">本文</label>
+                <textarea id="postContent" name="postContent" rows="10" required
+                          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+ここに本文を記述します。
+                </textarea>
+            </div>
+            
+            <button type="submit"
+                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                GitHubで開く
+            </button>
+        </form>
+        
+        <div class="mt-4 flex justify-between items-center text-sm">
+            <!-- ホームに戻るボタン -->
+            <a href="index.html" class="inline-block py-2 px-4 font-medium text-blue-600 hover:text-blue-700">
+                &larr; ホームに戻る
+            </a>
+            <!-- チートシートへのリンクをボタンに変更 -->
+            <button id="show-cheatsheet" class="py-2 px-4 font-medium text-blue-600 hover:text-blue-700">
+                Markdownチートシート &rarr;
+            </button>
+        </div>
+    
+        <p id="statusMessage" class="mt-4 text-center text-sm font-medium text-gray-600"></p>
+    </div>
+
+    <!-- Modal for Cheatsheet -->
+    <div id="cheatsheet-modal" class="modal-overlay">
+        <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-2xl overflow-y-auto max-h-[90vh]">
+            <div class="flex justify-end mb-4">
+                <button id="close-cheatsheet" class="text-gray-500 hover:text-gray-700 font-bold text-2xl">&times;</button>
+            </div>
+            <div id="cheatsheet-content">
+                <!-- Cheatsheet content will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+<script>
+    document.getElementById('postForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        try {
+            const owner = 'AnyaPrin';
+            const repo = 'Vibey-Jekyll';
+            const branch = 'main';
+            const title = document.getElementById('postTitle').value;
+            const content = document.getElementById('postContent').value;
+            const safeTitle = title.trim() || 'untitled';
+            console.log('Safe Title:', safeTitle);
+            const cleanedSafeTitle = safeTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+            console.log('Cleaned Title:', cleanedSafeTitle);
+            const finalSafeTitle = cleanedSafeTitle || 'untitled';
+            console.log('Final Title:', finalSafeTitle);
+            const now = new Date();
+            const dateStr = now.toISOString().split('T')[0];
+            const fileName = `${dateStr}-${finalSafeTitle}.md`;
+            const fileContent = 
+`---
+layout: post
+title: "${title}"
+date: ${now.toISOString()}
+categories: memo
+---
+
+${content}`;
+            const encodedFileContent = encodeURIComponent(fileContent);
+            const newFileUrl = 
+                `https://github.com/${owner}/${repo}/new/${branch}/_posts/` + 
+                `?filename=${fileName}&value=${encodedFileContent}`;
+            window.open(newFileUrl, '_blank');
+        } catch (error) {
+            console.error('Error in form submission:', error);
+            document.getElementById('statusMessage').textContent = 'エラーが発生しました。もう一度お試しください。';
+        }
+    });
+
+    document.getElementById('show-cheatsheet').addEventListener('click', function() {
+        console.log('Show cheatsheet clicked');
+        const cheatsheetModal = document.getElementById('cheatsheet-modal');
+        const cheatsheetContent = document.getElementById('cheatsheet-content');
+        try {
+            cheatsheetContent.innerHTML = `
+                <h1 class="text-3xl font-bold mb-4">Markdown チートシート</h1>
+                <p class="text-gray-600 mb-6">基本的なMarkdownの書式をまとめたものです。</p>
+                <hr class="my-6">
+                <h2 class="text-2xl font-bold">見出し (Headers)</h2>
+                <p><code>#</code> の数で階層を表現します。</p>
+                <pre><code class="language-md"># 見出し1\n## 見出し2\n### 見出し3</code></pre>
+                <h2 class="text-2xl font-bold">テキストの装飾 (Text Emphasis)</h2>
+                <p><strong>太字</strong>: <code>**太字**</code> または <code>__太字__</code></p>
+                <p><em>斜体</em>: <code>*斜体*</code> または <code>_斜体_</code></p>
+                <p><strong><em>太字と斜体</em></strong>: <code>***太字と斜体***</code></p>
+                <p><del>取り消し線</del>: <code>~~取り消し線~~</code></p>
+                <h2 class="text-2xl font-bold">リスト (Lists)</h2>
+                <h3 class="text-xl font-bold">順序なしリスト</h3>
+                <pre><code class="language-md">* 項目1\n* 項目2\n  * 項目2-1</code></pre>
+                <h3 class="text-xl font-bold">順序付きリスト</h3>
+                <pre><code class="language-md">1. 項目A\n2. 項目B</code></pre>
+                <h2 class="text-2xl font-bold">リンクと画像</h2>
+                <p><strong>リンク</strong>: <code>[表示テキスト](URL)</code></p>
+                <p><strong>画像</strong>: <code>![代替テキスト](画像URL)</code></p>
+                <h2 class="text-2xl font-bold">コード</h2>
+                <h3 class="text-xl font-bold">インラインコード</h3>
+                <p><code></code>で囲みます。</p>
+                <h3 class="text-xl font-bold">コードブロック</h3>
+                <p><code></code>で囲みます。言語名も指定できます。</p>
+                <pre><code class="language-js">function example() {\n  console.log("Hello, World!");\n}</code></pre>
+                <h2 class="text-2xl font-bold">表 (Tables)</h2>
+                <pre><code class="language-md">| ヘッダー1 | ヘッダー2 |\n| :--- | :---: |\n| セル1 | セル2 |</code></pre>
+                <h2 class="text-2xl font-bold">引用 (Blockquotes)</h2>
+                <pre><code class="language-md">&gt; これは引用です。\n&gt; 別の引用行。</code></pre>
+            `;
+            cheatsheetModal.style.display = 'flex';
+        } catch (error) {
+            console.error('Error showing cheatsheet:', error);
+        }
+    });
+
+    document.getElementById('close-cheatsheet').addEventListener('click', function() {
+        const cheatsheetModal = document.getElementById('cheatsheet-modal');
+        cheatsheetModal.style.display = 'none';
+    });
+
+    document.getElementById('cheatsheet-modal').addEventListener('click', function(event) {
+        if (event.target === this) {
+            this.style.display = 'none';
+        }
+    });
+</script>
+
+
+</body>
+</html>
+
