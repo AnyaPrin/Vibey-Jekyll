@@ -65,11 +65,17 @@
             const title = document.getElementById('postTitle').value;
             const content = document.getElementById('postContent').value;
             
+            // --- NEW: Sanitize and validate title ---
+            const safeTitle = title.trim() || 'untitled';
+            const cleanedSafeTitle = safeTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+            
+            // If the cleaned title is still empty, use a fallback
+            const finalSafeTitle = cleanedSafeTitle || 'untitled';
+
             // Generate a date string and a URL-safe title
             const now = new Date();
             const dateStr = now.toISOString().split('T')[0];
-            const safeTitle = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-            const fileName = `${dateStr}-${safeTitle}.md`;
+            const fileName = `${dateStr}-${finalSafeTitle}.md`;
 
             // Create the full file content including Front Matter
             const fileContent = 
